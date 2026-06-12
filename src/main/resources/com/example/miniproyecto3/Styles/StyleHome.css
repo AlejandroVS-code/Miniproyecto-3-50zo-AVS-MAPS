@@ -1,0 +1,13 @@
+/* Selection buttons */
+.selection-btn {
+    -fx-background-color: #4d3a12;
+    -fx-text-fill: white;
+    -fx-border-color: #c9a14a;
+}
+
+.selection-btn-active {
+    -fx-background-color: #c9a14a;
+    -fx-text-fill: #1f1f1f;
+    -fx-border-color: #f4d48b;
+    -fx-font-weight: bold;
+}

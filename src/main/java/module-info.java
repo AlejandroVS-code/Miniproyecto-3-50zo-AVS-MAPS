@@ -1,6 +1,7 @@
 module com.example.miniproyecto3 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.smartcardio;
 
 
     opens com.example.miniproyecto3 to javafx.fxml;
