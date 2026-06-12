@@ -205,7 +205,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="67.0" prefWidth="311.0">
                <children>
-                  <ImageView fx:id="humanCard11" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="humanCard1" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Cartas/red_joker.png" />
                      </image>
@@ -213,7 +213,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="humanCard21" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="humanCard2" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Cartas/red_joker.png" />
                      </image>
@@ -221,7 +221,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="humanCard31" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="humanCard3" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Cartas/red_joker.png" />
                      </image>
@@ -229,7 +229,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="humanCard41" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="humanCard4" fitHeight="56.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Cartas/red_joker.png" />
                      </image>
