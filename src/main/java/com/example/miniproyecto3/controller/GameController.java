@@ -7,6 +7,7 @@ import com.example.miniproyecto3.model.exceptions.GameStateException;
 import com.example.miniproyecto3.model.interfaces.ICardClickHandler;
 import com.example.miniproyecto3.thread.DrawCardThread;
 import com.example.miniproyecto3.thread.MachinePlayerThread;
+import com.example.miniproyecto3.util.AnimationUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -89,6 +90,7 @@ public class GameController {
                     playerIcons.get(i).getStyleClass().add("player-eliminated");
                 } else if (gameModel.getCurrentPlayerIndex() == i) {
                     playerIcons.get(i).getStyleClass().add("player-active");
+                    AnimationUtil.highlightTurn(playerIcons.get(i));
                 }
             }
         }
@@ -101,7 +103,7 @@ public class GameController {
         ia3CardViews   = List.of(ia3Card1, ia3Card2, ia3Card3, ia3Card4);
         playerIcons = List.of(humanIcon, ia1Icon, ia2Icon, ia3Icon);
         moreBtn.setOnAction(e -> handlePlayCard());
-
+        humanCardViews.forEach(v -> v.getStyleClass().add("human-card"));
         moreBtn.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
                 moveCardSelection(event.getCode() == KeyCode.RIGHT ? 1 : -1);
@@ -188,12 +190,19 @@ public class GameController {
         if (!humanTurn || selectedCard == null) return;
         try {
             HumanPlayer human = (HumanPlayer) gameModel.getPlayers().get(0);
+            int index = human.getHand().indexOf(selectedCard);
 
-            if (selectedCard.getRank() == Rank.ACE) {
-                askAceValue(human);
-            } else {
-                playHumanCard(human, selectedCard);
-            }
+            AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
+                try {
+                    if (selectedCard.getRank() == Rank.ACE) {
+                        askAceValue(human);
+                    } else {
+                        playHumanCard(human, selectedCard);
+                    }
+                } catch (Exception e) {
+                    showError("Invalid play: that card would exceed 50.");
+                }
+            });
         } catch (Exception e) {
             showError("Invalid play: that card would exceed 50.");
         }
@@ -253,6 +262,7 @@ public class GameController {
             Player current = gameModel.getCurrentPlayer();
             if (!current.hasValidPlay(gameModel.getTablePile().getCurrentSum())) {
                 try {
+                    AnimationUtil.eliminatedShake(playerIcons.get(gameModel.getCurrentPlayerIndex()));
                     gameModel.eliminateCurrentPlayer();
                 } catch (EmptyDeckException e) {
                     showError("Deck error: " + e.getMessage());
@@ -273,11 +283,30 @@ public class GameController {
     }
 
     private void startMachineTurn() {
-        MachinePlayerThread machineThread = new MachinePlayerThread(gameModel, () -> {
-            updateView();
-            startDrawCardThread(gameModel.getCurrentPlayer());
+        MachinePlayerThread machineThread = new MachinePlayerThread(gameModel, (cardIndex) -> {
+            int machineIndex = gameModel.getCurrentPlayerIndex();
+            List<ImageView> currentMachineViews = getMachineCardViews(machineIndex);
+
+            if (currentMachineViews != null && cardIndex >= 0 && cardIndex < currentMachineViews.size()) {
+                AnimationUtil.playCardToTable(currentMachineViews.get(cardIndex), () -> {
+                    updateView();
+                    startDrawCardThread(gameModel.getCurrentPlayer());
+                });
+            } else {
+                updateView();
+                startDrawCardThread(gameModel.getCurrentPlayer());
+            }
         });
         machineThread.start();
+    }
+
+    private List<ImageView> getMachineCardViews(int playerIndex) {
+        return switch (playerIndex) {
+            case 1 -> ia1CardViews;
+            case 2 -> ia2CardViews;
+            case 3 -> ia3CardViews;
+            default -> null;
+        };
     }
 
     private void updateView() {
@@ -295,6 +324,7 @@ public class GameController {
         Card top = gameModel.getTablePile().getTopCard();
         if (top != null) {
             discardPile.setImage(loadImage(top.getImagePath()));
+            AnimationUtil.fadeInCard(discardPile);
         }
     }
 
@@ -309,6 +339,7 @@ public class GameController {
             if (i < hand.size()) {
                 humanCardViews.get(i).setImage(loadImage(hand.get(i).getImagePath()));
                 humanCardViews.get(i).setVisible(true);
+                AnimationUtil.fadeInCard(humanCardViews.get(i));
             } else {
                 humanCardViews.get(i).setVisible(false);
             }
@@ -357,13 +388,16 @@ public class GameController {
 
     private void highlightSelectedCard(int index) {
         clearHighlights();
-        humanCardViews.get(index).setStyle("-fx-effect: dropshadow(gaussian, #c9a14a, 10, 0.8, 0, 0);");
+        humanCardViews.get(index).getStyleClass().add("card-selected");
+        AnimationUtil.selectCardPulse(humanCardViews.get(index));
     }
 
     private void clearHighlights() {
-        humanCardViews.forEach(v -> v.setStyle(""));
+        for (ImageView card : humanCardViews) {
+            card.getStyleClass().remove("card-selected");
+            AnimationUtil.deselectCard(card);
+        }
     }
-
     private Image loadImage(String path) {
         return new Image(getClass().getResourceAsStream(path));
     }

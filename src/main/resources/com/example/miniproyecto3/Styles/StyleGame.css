@@ -1,8 +1,35 @@
+/* Card hover effect */
+.human-card {
+    -fx-cursor: hand;
+}
+
+.human-card:hover {
+    -fx-effect: dropshadow(gaussian, #c9a14a, 8, 0.6, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Selected card */
+.card-selected {
+    -fx-effect: dropshadow(gaussian, #c9a14a, 14, 0.9, 0, 0);
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+/* Active player */
 .player-active {
     -fx-effect: dropshadow(gaussian, #c9a14a, 20, 0.9, 0, 0);
 }
 
+/* Eliminated player */
 .player-eliminated {
     -fx-effect: dropshadow(gaussian, #ff0000, 10, 0.5, 0, 0);
     -fx-opacity: 0.4;
+}
+
+/* Play button hover */
+.play-btn:hover {
+    -fx-background-color: #f4d48b;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
