@@ -7,14 +7,15 @@ import com.example.miniproyecto3.model.MachinePlayer;
 import javafx.application.Platform;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class MachinePlayerThread extends Thread {
 
     private final GameModel gameModel;
-    private final Runnable onTurnComplete;
+    private final Consumer<Integer> onTurnComplete;
     private final Random random;
 
-    public MachinePlayerThread(GameModel gameModel, Runnable onTurnComplete) {
+    public MachinePlayerThread(GameModel gameModel, Consumer<Integer> onTurnComplete) {
         this.gameModel = gameModel;
         this.onTurnComplete = onTurnComplete;
         this.random = new Random();
@@ -32,17 +33,18 @@ public class MachinePlayerThread extends Thread {
             Card cardToPlay = machine.selectBestCard(gameModel.getTablePile().getCurrentSum());
 
             if (cardToPlay != null) {
+                int cardIndex = machine.getHand().indexOf(cardToPlay);
                 machine.playCard(cardToPlay, gameModel.getTablePile());
+                Platform.runLater(() -> onTurnComplete.accept(cardIndex));
             } else {
                 gameModel.eliminateCurrentPlayer();
+                Platform.runLater(() -> onTurnComplete.accept(-1));
             }
-
-            Platform.runLater(onTurnComplete);
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (Exception e) {
-            Platform.runLater(onTurnComplete);
+            Platform.runLater(() -> onTurnComplete.accept(-1));
         }
     }
 }
