@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="264.0" prefWidth="600.0" style="-fx-background-size: cover; -fx-background-repeat: no-repeat; -fx-background-position: center center;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="317.0" fitWidth="606.0" layoutX="-5.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Imagenes/d34bccd606c1d5a7b91650ba32ea9b0c.jpg" />
+               </image>
+               <effect>
+                  <SepiaTone />
+               </effect>
+            </ImageView>
+            <VBox alignment="CENTER" layoutX="129.0" layoutY="14.0" prefHeight="286.0" prefWidth="356.0" style="-fx-background-color: #041C45; -fx-border-color: #C89B29; -fx-border-width: 2; -fx-padding: 20;">
+               <children>
+                  <ImageView fitHeight="61.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Iconos/medalla%20(1).png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="-10.0" />
+                     </VBox.margin>
+                     <effect>
+                        <Bloom />
+                     </effect>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="150.0" style="-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;" text="VICTORY">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                     <effect>
+                        <Glow>
+                           <input>
+                              <Bloom />
+                           </input>
+                        </Glow>
+                     </effect>
+                  </Label>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" style="-fx-background-color: #1a1a1a;">
+                     <children>
+                        <Label alignment="CENTER" style="-fx-text-fill: #C89B29;" text="Winner" />
+                        <Label style="-fx-font-weight: bold;" text="Commodore Vance" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Final Score" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label style="-fx-text-fill: #C89B29;" text="8.500" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="Hands Won" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label style="-fx-text-fill: #C89B29;" text="12" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="menuBtn" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #d6a43c; -fx-text-fill: #1f1f1f; -fx-font-weight: bold; -fx-font-size: 14;" text="Menu" textFill="#e7e2e2">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <HBox.margin>
+                              <Insets left="35.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="startBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #d6a43c; -fx-text-fill: #1f1f1f; -fx-font-weight: bold; -fx-font-size: 14;" text="Juego Nuevo" textAlignment="CENTER" textFill="#e7e2e2">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <effect>
+                  <InnerShadow />
+               </effect>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <HBox prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #1a1a1a; -fx-padding: 8;" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="30.0" prefWidth="66.0" style="-fx-text-fill: #f4d48b; -fx-font-size: 20; -fx-font-weight: bold;" text="RYCC" />
+            <Label prefHeight="30.0" prefWidth="209.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Loyal Yacht Card Club" textFill="WHITE" />
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="39.0" prefWidth="600.0" style="-fx-background-color: #1a1a1a;" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
