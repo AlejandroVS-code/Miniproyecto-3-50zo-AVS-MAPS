@@ -1,4 +1,4 @@
-package com.example.miniproyecto3.View;
+package com.example.miniproyecto3.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

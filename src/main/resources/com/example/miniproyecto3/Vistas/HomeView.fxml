@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../Styles/StyleHome.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../Styles/StyleHome.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproyecto3.controller.HomeController">
    <center>
       <AnchorPane prefHeight="264.0" prefWidth="600.0" style="-fx-background-color: url(&quot;@../Imagenes/background.png&quot;);; -fx-background-size: cover; -fx-background-repeat: no-repeat; -fx-background-position: center center;" BorderPane.alignment="CENTER">
          <children>
@@ -48,15 +48,15 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="selection1Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" text="1" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="selection1Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" styleClass="selection-btn" text="1" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
-                        <Button fx:id="selection2Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" text="2" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <Button fx:id="selection2Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" styleClass="selection-btn" text="2" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
-                        <Button fx:id="selection3Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" text="3" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                        <Button fx:id="selection3Ia" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #4d3a12;; -fx-text-fill: white;; -fx-border-color: #c9a14a;;" styleClass="selection-btn" text="3" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>

@@ -19,6 +19,10 @@ public class TablePile {
         currentSum += cardValue;
         pile.push(card);
     }
+    public void addCardWithValue(Card card, int forcedValue) {
+        currentSum += forcedValue;
+        pile.push(card);
+    }
 
     public Card getTopCard() {
         if (pile.isEmpty()) {

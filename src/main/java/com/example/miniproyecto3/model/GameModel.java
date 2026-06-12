@@ -24,9 +24,9 @@ public class GameModel {
 
     public void initGame(int machineCount) throws EmptyDeckException {
         players.clear();
-        players.add(new HumanPlayer("Player"));
+        players.add(new HumanPlayer("Tu"));
         for (int i = 1; i <= machineCount; i++) {
-            players.add(new MachinePlayer("Machine " + i));
+            players.add(new MachinePlayer("IA " + i));
         }
         for (Player player : players) {
             for (int i = 0; i < GameConstants.HAND_SIZE; i++) {
