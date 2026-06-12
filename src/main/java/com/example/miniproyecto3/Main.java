@@ -1,7 +1,6 @@
 package com.example.miniproyecto3;
 
-import com.example.miniproyecto3.View.GameStage;
-import com.example.miniproyecto3.View.HomeStage;
+import com.example.miniproyecto3.view.HomeStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

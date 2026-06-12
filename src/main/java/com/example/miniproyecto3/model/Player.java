@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player implements IPlayable, IEliminable {
-
+    private int totalPoints;
     private final String name;
     private final PlayerType playerType;
     private final ArrayList<Card> hand;
@@ -22,6 +22,13 @@ public abstract class Player implements IPlayable, IEliminable {
         this.playerType = playerType;
         this.hand = new ArrayList<>();
         this.eliminated = false;
+    }
+    public void addPoints(int points) {
+        totalPoints += points;
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
     }
 
     public boolean hasValidPlay(int tableSum) {

@@ -21,6 +21,7 @@ public class MachinePlayer extends Player {
             );
         }
         getHand().remove(card);
+        addPoints(Math.abs(cardValue));
         table.addCard(card);
     }
 
