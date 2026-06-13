@@ -29,7 +29,7 @@ public class GameController {
     @FXML private Label pointsPj4;
 
     @FXML private Button moreBtn;
-
+    private boolean machineAnimationInProgress = false;
     @FXML private ImageView drawDeck;
     @FXML private ImageView discardPile;
     @FXML private Label counterLabel;
@@ -192,23 +192,23 @@ public class GameController {
             HumanPlayer human = (HumanPlayer) gameModel.getPlayers().get(0);
             int index = human.getHand().indexOf(selectedCard);
 
-            AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
-                try {
-                    if (selectedCard.getRank() == Rank.ACE) {
-                        askAceValue(human);
-                    } else {
+            if (selectedCard.getRank() == Rank.ACE) {
+                askAceValue(human, index);
+            } else {
+                AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
+                    try {
                         playHumanCard(human, selectedCard);
+                    } catch (Exception e) {
+                        showError("Invalid play: that card would exceed 50.");
                     }
-                } catch (Exception e) {
-                    showError("Invalid play: that card would exceed 50.");
-                }
-            });
+                });
+            }
         } catch (Exception e) {
             showError("Invalid play: that card would exceed 50.");
         }
     }
 
-    private void askAceValue(HumanPlayer human) {
+    private void askAceValue(HumanPlayer human, int index) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Ace");
         alert.setHeaderText("¿Cuánto vale el As?");
@@ -220,12 +220,18 @@ public class GameController {
         alert.showAndWait().ifPresent(choice -> {
             int aceValue = (choice == btn10) ? 10 : 1;
             try {
-                human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
-                selectedCard = null;
-                clearHighlights();
-                humanTurn = false;
-                updateView();
-                startDrawCardThread(human);
+                AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
+                    try {
+                        human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
+                        selectedCard = null;
+                        clearHighlights();
+                        humanTurn = false;
+                        updateView();
+                        startDrawCardThread(human);
+                    } catch (Exception e) {
+                        showError("Invalid play: that card would exceed 50.");
+                    }
+                });
             } catch (Exception e) {
                 showError("Invalid play: that card would exceed 50.");
             }
@@ -244,7 +250,18 @@ public class GameController {
 
 
     private void startDrawCardThread(Player player) {
+        int machineIndex = gameModel.getCurrentPlayerIndex();
         DrawCardThread drawThread = new DrawCardThread(gameModel, player, () -> {
+            if (player instanceof MachinePlayer) {
+                List<ImageView> views = getMachineCardViews(machineIndex);
+                if (views != null) {
+                    int newCardIndex = player.getHand().size() - 1;
+                    if (newCardIndex >= 0 && newCardIndex < views.size()) {
+                        views.get(newCardIndex).setVisible(true);
+                        AnimationUtil.fadeInCard(views.get(newCardIndex));
+                    }
+                }
+            }
             updateView();
             checkEliminationAndNextTurn();
         });
@@ -283,12 +300,14 @@ public class GameController {
     }
 
     private void startMachineTurn() {
-        MachinePlayerThread machineThread = new MachinePlayerThread(gameModel, (cardIndex) -> {
-            int machineIndex = gameModel.getCurrentPlayerIndex();
-            List<ImageView> currentMachineViews = getMachineCardViews(machineIndex);
+        int machineIndex = gameModel.getCurrentPlayerIndex();
+        List<ImageView> currentMachineViews = getMachineCardViews(machineIndex);
 
+        MachinePlayerThread machineThread = new MachinePlayerThread(gameModel, (cardIndex) -> {
             if (currentMachineViews != null && cardIndex >= 0 && cardIndex < currentMachineViews.size()) {
+                machineAnimationInProgress = true;
                 AnimationUtil.playCardToTable(currentMachineViews.get(cardIndex), () -> {
+                    machineAnimationInProgress = false;
                     updateView();
                     startDrawCardThread(gameModel.getCurrentPlayer());
                 });
@@ -339,7 +358,6 @@ public class GameController {
             if (i < hand.size()) {
                 humanCardViews.get(i).setImage(loadImage(hand.get(i).getImagePath()));
                 humanCardViews.get(i).setVisible(true);
-                AnimationUtil.fadeInCard(humanCardViews.get(i));
             } else {
                 humanCardViews.get(i).setVisible(false);
             }
@@ -347,21 +365,25 @@ public class GameController {
     }
 
     private void updateMachineCards() {
+        if (machineAnimationInProgress) return;
         String backPath = "/com/example/miniproyecto3/Imagenes/reverse.png";
         List<List<ImageView>> machineViews = List.of(ia1CardViews, ia2CardViews, ia3CardViews);
         for (int m = 0; m < machineCount; m++) {
             Player machine = gameModel.getPlayers().get(m + 1);
             List<ImageView> views = machineViews.get(m);
-            for (int i = 0; i < views.size(); i++) {
-                if (!machine.isEliminated() && i < machine.getHand().size()) {
+            if (machine.isEliminated()) {
+                views.forEach(v -> v.setVisible(false));
+                continue;
+            }
+            for (int i = 0; i < GameConstants.HAND_SIZE; i++) {
+                if (i < machine.getHand().size()) {
                     views.get(i).setImage(loadImage(backPath));
                     views.get(i).setVisible(true);
-                } else {
-                    views.get(i).setVisible(false);
                 }
             }
         }
     }
+
 
     private void updatePlayerLabels() {
         List<Label> labels = List.of(pointsPj1, pointsPj2, pointsPj3, pointsPj4);
