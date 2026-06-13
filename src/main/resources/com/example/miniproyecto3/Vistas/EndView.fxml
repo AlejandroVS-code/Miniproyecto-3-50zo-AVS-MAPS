@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.miniproyecto3.controller.EndController">
    <center>
       <AnchorPane prefHeight="264.0" prefWidth="600.0" style="-fx-background-size: cover; -fx-background-repeat: no-repeat; -fx-background-position: center center;" BorderPane.alignment="CENTER">
          <children>
@@ -41,7 +41,7 @@
                         <Bloom />
                      </effect>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="150.0" style="-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;" text="VICTORY">
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="150.0" style="-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;" text="VICTORIA">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
@@ -55,8 +55,8 @@
                   </Label>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" style="-fx-background-color: #1a1a1a;">
                      <children>
-                        <Label alignment="CENTER" style="-fx-text-fill: #C89B29;" text="Winner" />
-                        <Label style="-fx-font-weight: bold;" text="Commodore Vance" textFill="WHITE">
+                        <Label alignment="CENTER" style="-fx-text-fill: #C89B29;" text="Ganador" />
+                        <Label fx:id="winnerNameLabel" style="-fx-font-weight: bold;" text="Commodore Vance" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -65,14 +65,14 @@
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Final Score" textAlignment="CENTER" textFill="WHITE" />
-                                    <Label style="-fx-text-fill: #C89B29;" text="8.500" />
+                                    <Label alignment="CENTER" text="Puntaje final" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label fx:id="finalScoreLabel" style="-fx-text-fill: #C89B29;" text="8.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Hands Won" textAlignment="CENTER" textFill="WHITE" />
-                                    <Label style="-fx-text-fill: #C89B29;" text="12" />
+                                    <Label alignment="CENTER" text="Movimientos" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label fx:id="movesLabel" style="-fx-text-fill: #C89B29;" text="12" />
                                  </children>
                               </VBox>
                            </children>

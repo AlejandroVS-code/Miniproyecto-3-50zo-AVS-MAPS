@@ -19,6 +19,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 
+import com.example.miniproyecto3.view.EndStage;
+
+import java.io.IOException;
 import java.util.List;
 
 public class GameController {
@@ -64,6 +67,8 @@ public class GameController {
     private int machineCount;
     private Card selectedCard;
     private boolean humanTurn;
+
+    private int totalMoves = 0;
 
     private List<ImageView> humanCardViews;
     private List<ImageView> ia1CardViews;
@@ -221,6 +226,7 @@ public class GameController {
             int aceValue = (choice == btn10) ? 10 : 1;
             try {
                 human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
+                totalMoves++;
                 selectedCard = null;
                 clearHighlights();
                 humanTurn = false;
@@ -233,10 +239,15 @@ public class GameController {
     }
 
     private void playHumanCard(HumanPlayer human, Card card) throws Exception {
+
         human.playCard(card, gameModel.getTablePile());
+
+        totalMoves++;
+
         selectedCard = null;
         clearHighlights();
         humanTurn = false;
+
         updateView();
         startDrawCardThread(human);
     }
@@ -289,6 +300,7 @@ public class GameController {
 
             if (currentMachineViews != null && cardIndex >= 0 && cardIndex < currentMachineViews.size()) {
                 AnimationUtil.playCardToTable(currentMachineViews.get(cardIndex), () -> {
+                    totalMoves++;
                     updateView();
                     startDrawCardThread(gameModel.getCurrentPlayer());
                 });
@@ -413,10 +425,24 @@ public class GameController {
 
     private void showWinner(Player winner) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Over");
-            alert.setContentText(winner.getName() + " wins!");
-            alert.showAndWait();
+            try {
+                // Cierra la ventana del juego
+                javafx.stage.Stage gameStage =
+                        (javafx.stage.Stage) moreBtn.getScene().getWindow();
+                gameStage.close();
+
+                // Abre la pantalla de fin de juego
+                EndStage endStage = new EndStage();
+                endStage.getController().initEndGame(winner, machineCount, totalMoves);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Fallback: Alert básico si falla la carga del FXML
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Game Over");
+                alert.setContentText(winner.getName() + " wins!");
+                alert.showAndWait();
+            }
         });
     }
 }

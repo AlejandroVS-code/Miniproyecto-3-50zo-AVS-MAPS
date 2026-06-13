@@ -1,0 +1,88 @@
+package com.example.miniproyecto3.controller;
+
+import com.example.miniproyecto3.model.GameModel;
+import com.example.miniproyecto3.model.Player;
+import com.example.miniproyecto3.view.EndStage;
+import com.example.miniproyecto3.view.GameStage;
+import com.example.miniproyecto3.view.HomeStage;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class EndController {
+
+
+
+    @FXML private Button menuBtn;
+    @FXML private Button startBtn;
+
+    // Labels definidos en EndView.fxml (los que muestran el ganador y stats)
+    // Se buscan por fx:id; si tu FXML no les pone fx:id todavía,
+    // los inyectamos por lookup en initEndGame().
+    @FXML private Label winnerNameLabel;   // fx:id="winnerNameLabel"
+    @FXML private Label finalScoreLabel;   // fx:id="finalScoreLabel"
+
+    @FXML private Label movesLabel;
+
+    private int machineCount;
+
+    @FXML
+    public void initialize() {
+        menuBtn.setOnAction(e -> handleMenu());
+        startBtn.setOnAction(e -> handleNewGame());
+    }
+
+    /**
+     * Recibe los datos del ganador desde GameController y los muestra en pantalla.
+     *
+     * @param winner       Jugador ganador
+     * @param machineCount Número de IAs con las que se jugó (para reiniciar igual)
+     */
+    public void initEndGame(
+            Player winner,
+            int machineCount,
+            int totalMoves) {
+
+        this.machineCount = machineCount;
+
+        winnerNameLabel.setText(
+                winner.getName()
+        );
+
+        finalScoreLabel.setText(
+                String.valueOf(winner.getTotalPoints())
+        );
+
+        movesLabel.setText(
+                String.valueOf(totalMoves)
+        );
+    }
+
+
+    /** Cierra esta pantalla y vuelve al menú principal. */
+    private void handleMenu() {
+        try {
+            Stage stage = (Stage) menuBtn.getScene().getWindow();
+            stage.close();
+            new HomeStage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Cierra esta pantalla e inicia una nueva partida con el mismo número de IAs. */
+    private void handleNewGame() {
+        try {
+            Stage stage = (Stage) startBtn.getScene().getWindow();
+            stage.close();
+
+            GameStage gameStage = new GameStage();
+            gameStage.getController().initGame(new GameModel(), machineCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
