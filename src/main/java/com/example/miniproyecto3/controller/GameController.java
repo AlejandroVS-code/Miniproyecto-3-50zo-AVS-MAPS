@@ -224,30 +224,19 @@ public class GameController {
 
         alert.showAndWait().ifPresent(choice -> {
             int aceValue = (choice == btn10) ? 10 : 1;
-            try {
-                human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
-                totalMoves++;
-                selectedCard = null;
-                clearHighlights();
-                humanTurn = false;
-                updateView();
-                startDrawCardThread(human);
-                AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
-                    try {
-                        human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
-                        selectedCard = null;
-                        clearHighlights();
-                        humanTurn = false;
-                        updateView();
-                        startDrawCardThread(human);
-                    } catch (Exception e) {
-                        showError("Invalid play: that card would exceed 50.");
-                    }
-                });
-
-            } catch (Exception e) {
-                showError("Invalid play: that card would exceed 50.");
-            }
+            AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
+                try {
+                    human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
+                    totalMoves++;
+                    selectedCard = null;
+                    clearHighlights();
+                    humanTurn = false;
+                    updateView();
+                    startDrawCardThread(human);
+                } catch (Exception e) {
+                    showError("Invalid play: that card would exceed 50.");
+                }
+            });
         });
     }
 
