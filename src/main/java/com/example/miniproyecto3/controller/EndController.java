@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import com.example.miniproyecto3.util.MusicManager;
 
 import java.io.IOException;
 
@@ -31,6 +32,8 @@ public class EndController {
 
     @FXML
     public void initialize() {
+
+
         menuBtn.setOnAction(e -> handleMenu());
         startBtn.setOnAction(e -> handleNewGame());
     }
@@ -47,7 +50,7 @@ public class EndController {
             int totalMoves) {
 
         this.machineCount = machineCount;
-
+        MusicManager.playMusic("/com/example/miniproyecto3/Audio/end.wav");
         winnerNameLabel.setText(
                 winner.getName()
         );
@@ -65,6 +68,7 @@ public class EndController {
     /** Cierra esta pantalla y vuelve al menú principal. */
     private void handleMenu() {
         try {
+            MusicManager.stopMusic();
             Stage stage = (Stage) menuBtn.getScene().getWindow();
             stage.close();
             new HomeStage();
@@ -76,6 +80,7 @@ public class EndController {
     /** Cierra esta pantalla e inicia una nueva partida con el mismo número de IAs. */
     private void handleNewGame() {
         try {
+            MusicManager.stopMusic();
             Stage stage = (Stage) startBtn.getScene().getWindow();
             stage.close();
 

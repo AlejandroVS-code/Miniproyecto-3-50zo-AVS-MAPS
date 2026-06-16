@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import com.example.miniproyecto3.util.MusicManager;
 
 
 import com.example.miniproyecto3.view.EndStage;
@@ -102,6 +103,9 @@ public class GameController {
     }
     @FXML
     public void initialize() {
+        MusicManager.playMusic(
+                "/com/example/miniproyecto3/Audio/game.wav"
+        );
         humanCardViews = List.of(humanCard1, humanCard2, humanCard3, humanCard4);
         ia1CardViews   = List.of(ia1Card1, ia1Card2, ia1Card3, ia1Card4);
         ia2CardViews   = List.of(ia2Card1, ia2Card2, ia2Card3, ia2Card4);
@@ -445,6 +449,7 @@ public class GameController {
     private void showWinner(Player winner) {
         Platform.runLater(() -> {
             try {
+                MusicManager.stopMusic();
                 // Cierra la ventana del juego
                 javafx.stage.Stage gameStage =
                         (javafx.stage.Stage) moreBtn.getScene().getWindow();

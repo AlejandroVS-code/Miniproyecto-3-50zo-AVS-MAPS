@@ -5,6 +5,7 @@ import com.example.miniproyecto3.view.GameStage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import com.example.miniproyecto3.util.MusicManager;
 
 import java.io.IOException;
 
@@ -20,11 +21,14 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+
+        MusicManager.playMusic("/com/example/miniproyecto3/Audio/menu.wav");
         selection1Ia.setOnAction(e -> handleSelection(1));
         selection2Ia.setOnAction(e -> handleSelection(2));
         selection3Ia.setOnAction(e -> handleSelection(3));
         startBtn.setOnAction(e -> handleStart());
         exitBtn.setOnAction(e -> handleExit());
+
     }
 
     private void handleSelection(int count) {
@@ -45,6 +49,7 @@ public class HomeController {
             return;
         }
         try {
+            MusicManager.stopMusic(); // detener menú antes de abrir juego
             Stage stage = (Stage) startBtn.getScene().getWindow();
             stage.close();
 
@@ -57,6 +62,7 @@ public class HomeController {
     }
 
     private void handleExit() {
+        MusicManager.stopMusic();
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.close();
     }
