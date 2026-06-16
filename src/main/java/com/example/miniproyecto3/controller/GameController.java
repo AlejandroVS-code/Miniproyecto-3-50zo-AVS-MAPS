@@ -8,15 +8,16 @@ import com.example.miniproyecto3.model.interfaces.ICardClickHandler;
 import com.example.miniproyecto3.thread.DrawCardThread;
 import com.example.miniproyecto3.thread.MachinePlayerThread;
 import com.example.miniproyecto3.util.AnimationUtil;
-import com.example.miniproyecto3.util.DialogUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import com.example.miniproyecto3.util.MusicManager;
 
 
 import com.example.miniproyecto3.view.EndStage;
@@ -37,7 +38,6 @@ public class GameController {
     @FXML private ImageView discardPile;
     @FXML private Label counterLabel;
     @FXML private Label maxLabel;
-    @FXML private Label deckCountLabel;
 
     @FXML private ImageView humanCard1;
     @FXML private ImageView humanCard2;
@@ -68,6 +68,8 @@ public class GameController {
     private int machineCount;
     private Card selectedCard;
     private boolean humanTurn;
+
+    private int totalMoves = 0;
 
     private List<ImageView> humanCardViews;
     private List<ImageView> ia1CardViews;
@@ -101,6 +103,9 @@ public class GameController {
     }
     @FXML
     public void initialize() {
+        MusicManager.playMusic(
+                "/com/example/miniproyecto3/Audio/game.wav"
+        );
         humanCardViews = List.of(humanCard1, humanCard2, humanCard3, humanCard4);
         ia1CardViews   = List.of(ia1Card1, ia1Card2, ia1Card3, ia1Card4);
         ia2CardViews   = List.of(ia2Card1, ia2Card2, ia2Card3, ia2Card4);
@@ -199,42 +204,43 @@ public class GameController {
             if (selectedCard.getRank() == Rank.ACE) {
                 askAceValue(human, index);
             } else {
-                int cardValue = selectedCard.getValue(gameModel.getTablePile().getCurrentSum());
-                if (gameModel.getTablePile().getCurrentSum() + cardValue > GameConstants.MAX_SUM) {
-                    AnimationUtil.invalidCardShake(humanCardViews.get(index));
-                    DialogUtil.showError("Esa carta excede 50 puntos.");
-                    return;
-                }
-
-                List<ImageView> cardToAnimate = List.of(humanCardViews.get(index));
-                AnimationUtil.sendCardsToDeck(cardToAnimate, discardPile, () -> {
+                AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
                     try {
                         playHumanCard(human, selectedCard);
                     } catch (Exception e) {
-                        showError("Esta carta excede 50 puntos.");
+                        showError("Invalid play: that card would exceed 50.");
                     }
                 });
             }
         } catch (Exception e) {
-            showError("carta excede 50 puntos.");
+            showError("Invalid play: that card would exceed 50.");
         }
     }
 
     private void askAceValue(HumanPlayer human, int index) {
-        int aceValue = DialogUtil.showAceDialog();
-        List<ImageView> cardToAnimate = List.of(humanCardViews.get(index));
-        AnimationUtil.sendCardsToDeck(cardToAnimate, discardPile, () -> {
-            try {
-                human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
-                human.addMove();
-                selectedCard = null;
-                clearHighlights();
-                humanTurn = false;
-                updateView();
-                startDrawCardThread(human);
-            } catch (Exception e) {
-                DialogUtil.showError("Esa jugada excede 50 puntos.");
-            }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Ace");
+        alert.setHeaderText("¿Cuánto vale el As?");
+
+        ButtonType btn1 = new ButtonType("Sumar 1");
+        ButtonType btn10 = new ButtonType("Sumar 10");
+        alert.getButtonTypes().setAll(btn1, btn10);
+
+        alert.showAndWait().ifPresent(choice -> {
+            int aceValue = (choice == btn10) ? 10 : 1;
+            AnimationUtil.playCardToTable(humanCardViews.get(index), () -> {
+                try {
+                    human.playCardWithValue(selectedCard, gameModel.getTablePile(), aceValue);
+                    totalMoves++;
+                    selectedCard = null;
+                    clearHighlights();
+                    humanTurn = false;
+                    updateView();
+                    startDrawCardThread(human);
+                } catch (Exception e) {
+                    showError("Invalid play: that card would exceed 50.");
+                }
+            });
         });
     }
 
@@ -242,7 +248,7 @@ public class GameController {
 
         human.playCard(card, gameModel.getTablePile());
 
-        human.addMove();
+        totalMoves++;
 
         selectedCard = null;
         clearHighlights();
@@ -282,35 +288,23 @@ public class GameController {
         try {
             gameModel.nextTurn();
             Player current = gameModel.getCurrentPlayer();
-
             if (!current.hasValidPlay(gameModel.getTablePile().getCurrentSum())) {
-                int eliminatedIndex = gameModel.getCurrentPlayerIndex();
-                List<ImageView> eliminatedViews = eliminatedIndex == 0
-                        ? humanCardViews
-                        : getMachineCardViews(eliminatedIndex);
-
-                AnimationUtil.eliminatedShake(playerIcons.get(eliminatedIndex));
-
-                AnimationUtil.sendCardsToDeck(eliminatedViews, drawDeck, () -> {
-                    try {
-                        gameModel.eliminateCurrentPlayer();
-                    } catch (EmptyDeckException e) {
-                        showError("Deck error: " + e.getMessage());
-                    }
-                    updateView();
-                    checkEliminationAndNextTurn();
-                });
+                try {
+                    AnimationUtil.eliminatedShake(playerIcons.get(gameModel.getCurrentPlayerIndex()));
+                    gameModel.eliminateCurrentPlayer();
+                } catch (EmptyDeckException e) {
+                    showError("Deck error: " + e.getMessage());
+                }
+                updateView();
+                checkEliminationAndNextTurn();
                 return;
             }
-
             updateView();
-
             if (gameModel.getCurrentPlayer() instanceof MachinePlayer) {
                 startMachineTurn();
             } else {
                 humanTurn = true;
             }
-
         } catch (GameStateException e) {
             showError("Game state error: " + e.getMessage());
         }
@@ -324,7 +318,8 @@ public class GameController {
             if (currentMachineViews != null && cardIndex >= 0 && cardIndex < currentMachineViews.size()) {
                 machineAnimationInProgress = true;
                 AnimationUtil.playCardToTable(currentMachineViews.get(cardIndex), () -> {
-                    gameModel.getPlayers().get(machineIndex).addMove();
+
+                    totalMoves++;
                     machineAnimationInProgress = false;
                     updateView();
                     startDrawCardThread(gameModel.getCurrentPlayer());
@@ -368,20 +363,6 @@ public class GameController {
     private void updateCounter() {
         int sum = gameModel.getTablePile().getCurrentSum();
         counterLabel.setText(sum + "/");
-        deckCountLabel.setText(gameModel.getDeck().size() + " cartas");
-        counterLabel.getStyleClass().removeAll(
-                "counter-low", "counter-medium", "counter-high", "counter-danger"
-        );
-
-        if (sum <= 20) {
-            counterLabel.getStyleClass().add("counter-low");
-        } else if (sum <= 35) {
-            counterLabel.getStyleClass().add("counter-medium");
-        } else if (sum <= 45) {
-            counterLabel.getStyleClass().add("counter-high");
-        } else {
-            counterLabel.getStyleClass().add("counter-danger");
-        }
     }
 
     private void updateHumanCards() {
@@ -457,25 +438,30 @@ public class GameController {
     }
 
     private void showError(String message) {
-        Platform.runLater(() -> DialogUtil.showError(message));
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 
     private void showWinner(Player winner) {
         Platform.runLater(() -> {
             try {
+                MusicManager.stopMusic();
+                // Cierra la ventana del juego
                 javafx.stage.Stage gameStage =
                         (javafx.stage.Stage) moreBtn.getScene().getWindow();
                 gameStage.close();
 
+                // Abre la pantalla de fin de juego
                 EndStage endStage = new EndStage();
-                endStage.getController().initEndGame(
-                        winner,
-                        machineCount,
-                        winner.getTotalMoves()
-                );
+                endStage.getController().initEndGame(winner, machineCount, totalMoves);
 
             } catch (IOException e) {
                 e.printStackTrace();
+                // Fallback: Alert básico si falla la carga del FXML
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Game Over");
                 alert.setContentText(winner.getName() + " wins!");
