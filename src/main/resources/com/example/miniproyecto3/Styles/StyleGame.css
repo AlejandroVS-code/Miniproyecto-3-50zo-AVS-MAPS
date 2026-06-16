@@ -33,3 +33,20 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+/* Counter colors */
+.counter-low {
+    -fx-text-fill: #4CAF50;
+}
+
+.counter-medium {
+    -fx-text-fill: #D4AF37;
+}
+
+.counter-high {
+    -fx-text-fill: #FF5722;
+}
+
+.counter-danger {
+    -fx-text-fill: #FF0000;
+    -fx-effect: dropshadow(gaussian, #ff0000, 8, 0.6, 0, 0);
+}

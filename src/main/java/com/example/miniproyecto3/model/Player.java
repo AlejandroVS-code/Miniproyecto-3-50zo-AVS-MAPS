@@ -16,6 +16,15 @@ public abstract class Player implements IPlayable, IEliminable {
     private final PlayerType playerType;
     private final ArrayList<Card> hand;
     private boolean eliminated;
+    private int totalMoves;
+
+    public void addMove() {
+        totalMoves++;
+    }
+
+    public int getTotalMoves() {
+        return totalMoves;
+    }
 
     public Player(String name, PlayerType playerType) {
         this.name = name;

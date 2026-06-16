@@ -71,7 +71,7 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Movimientos" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label alignment="CENTER" text="Movimientos total" textAlignment="CENTER" textFill="WHITE" />
                                     <Label fx:id="movesLabel" style="-fx-text-fill: #C89B29;" text="12" />
                                  </children>
                               </VBox>
