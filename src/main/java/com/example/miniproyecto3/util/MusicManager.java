@@ -12,6 +12,8 @@ public class MusicManager {
 
     private static Clip clip;
 
+    private static final float DEFAULT_VOLUME = 0.05f;
+
     /**
      * Reproduce el archivo de audio indicado en bucle infinito.
      * @param resourcePath ruta del recurso, ej: "/com/example/miniproyecto3/Audio/menu.wav"
@@ -28,6 +30,7 @@ public class MusicManager {
                     new BufferedInputStream(is));
             clip = AudioSystem.getClip();
             clip.open(audioStream);
+            setVolume(DEFAULT_VOLUME);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
