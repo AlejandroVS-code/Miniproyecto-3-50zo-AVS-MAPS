@@ -5,6 +5,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import javafx.scene.control.Button;
+import javafx.scene.effect.Glow;
 
 import java.util.List;
 
@@ -134,5 +136,44 @@ public class AnimationUtil {
         });
 
         allCards.play();
+    }
+    public static void addHoverEffect(Button button) {
+
+        Glow glow = new Glow(0.35);
+
+        button.setOnMouseEntered(e -> {
+
+            ScaleTransition scale = new ScaleTransition(Duration.millis(150), button);
+            scale.setToX(1.08);
+            scale.setToY(1.08);
+            scale.play();
+
+            button.setEffect(glow);
+        });
+
+        button.setOnMouseExited(e -> {
+
+            ScaleTransition scale = new ScaleTransition(Duration.millis(150), button);
+            scale.setToX(1.0);
+            scale.setToY(1.0);
+            scale.play();
+
+            button.setEffect(null);
+        });
+
+    }
+
+    public static void addPressEffect(Button button) {
+
+        button.setOnMousePressed(e -> {
+            button.setScaleX(0.95);
+            button.setScaleY(0.95);
+        });
+
+        button.setOnMouseReleased(e -> {
+            button.setScaleX(1);
+            button.setScaleY(1);
+        });
+
     }
 }

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import com.example.miniproyecto3.util.MusicManager;
+import com.example.miniproyecto3.util.AnimationUtil;
 
 import java.io.IOException;
 
@@ -28,6 +29,20 @@ public class HomeController {
         selection3Ia.setOnAction(e -> handleSelection(3));
         startBtn.setOnAction(e -> handleStart());
         exitBtn.setOnAction(e -> handleExit());
+
+        AnimationUtil.addHoverEffect(startBtn);
+        AnimationUtil.addHoverEffect(exitBtn);
+
+        AnimationUtil.addHoverEffect(selection1Ia);
+        AnimationUtil.addHoverEffect(selection2Ia);
+        AnimationUtil.addHoverEffect(selection3Ia);
+
+        AnimationUtil.addPressEffect(startBtn);
+        AnimationUtil.addPressEffect(exitBtn);
+
+        AnimationUtil.addPressEffect(selection1Ia);
+        AnimationUtil.addPressEffect(selection2Ia);
+        AnimationUtil.addPressEffect(selection3Ia);
 
     }
 
@@ -66,4 +81,6 @@ public class HomeController {
         Stage stage = (Stage) exitBtn.getScene().getWindow();
         stage.close();
     }
+
+
 }
