@@ -2,6 +2,7 @@ package com.example.miniproyecto3.controller;
 
 import com.example.miniproyecto3.model.GameModel;
 import com.example.miniproyecto3.model.Player;
+import com.example.miniproyecto3.model.enums.PlayerType;
 import com.example.miniproyecto3.view.EndStage;
 import com.example.miniproyecto3.view.GameStage;
 import com.example.miniproyecto3.view.HomeStage;
@@ -10,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import com.example.miniproyecto3.util.MusicManager;
+import com.example.miniproyecto3.util.AnimationUtil;
+
 
 import java.io.IOException;
 
@@ -26,6 +29,8 @@ public class EndController {
     @FXML private Label winnerNameLabel;   // fx:id="winnerNameLabel"
     @FXML private Label finalScoreLabel;   // fx:id="finalScoreLabel"
 
+    @FXML private Label resultLabel;
+
     @FXML private Label movesLabel;
 
     private int machineCount;
@@ -36,6 +41,12 @@ public class EndController {
 
         menuBtn.setOnAction(e -> handleMenu());
         startBtn.setOnAction(e -> handleNewGame());
+
+        AnimationUtil.addHoverEffect(menuBtn);
+        AnimationUtil.addPressEffect(menuBtn);
+
+        AnimationUtil.addHoverEffect(startBtn);
+        AnimationUtil.addPressEffect(startBtn);
     }
 
     /**
@@ -51,6 +62,17 @@ public class EndController {
 
         this.machineCount = machineCount;
         MusicManager.playMusic("/com/example/miniproyecto3/Audio/end.wav");
+
+        boolean humanWon = winner.getPlayerType() == PlayerType.HUMAN;
+
+        if (humanWon) {
+            resultLabel.setText("VICTORIA");
+            resultLabel.setStyle("-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;");
+        } else {
+            resultLabel.setText("¡FALLASTE!");
+            resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14; -fx-font-weight: bold;");
+        }
+
         winnerNameLabel.setText(
                 winner.getName()
         );

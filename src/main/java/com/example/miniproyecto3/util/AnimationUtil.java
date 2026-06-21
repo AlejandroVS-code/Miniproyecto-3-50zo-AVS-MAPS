@@ -149,6 +149,8 @@ public class AnimationUtil {
             scale.play();
 
             button.setEffect(glow);
+
+            MusicManager.playSoundEffect("/com/example/miniproyecto3/Audio/hover.wav");
         });
 
         button.setOnMouseExited(e -> {
@@ -168,6 +170,8 @@ public class AnimationUtil {
         button.setOnMousePressed(e -> {
             button.setScaleX(0.95);
             button.setScaleY(0.95);
+
+            MusicManager.playSoundEffect("/com/example/miniproyecto3/Audio/click.wav");
         });
 
         button.setOnMouseReleased(e -> {
