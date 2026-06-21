@@ -96,6 +96,9 @@ public class GameController {
                 } else if (gameModel.getCurrentPlayerIndex() == i) {
                     playerIcons.get(i).getStyleClass().add("player-active");
                     AnimationUtil.highlightTurn(playerIcons.get(i));
+                    if (i == 0) {
+                        MusicManager.playSoundEffect("/com/example/miniproyecto3/Audio/turn.wav");  // <-- AGREGAR
+                    }
                 }
             }
         }
@@ -113,6 +116,9 @@ public class GameController {
 
         moreBtn.setOnAction(e -> handlePlayCard());
         humanCardViews.forEach(v -> v.getStyleClass().add("human-card"));
+
+        AnimationUtil.addHoverEffect(moreBtn);
+        AnimationUtil.addPressEffect(moreBtn);
 
         moreBtn.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
@@ -182,6 +188,12 @@ public class GameController {
             humanCardViews.get(i).setOnMouseClicked(e -> {
                 if (index < hand.size()) {
                     cardClickHandler.onCardClicked(hand.get(index), index);
+                }
+            });
+
+            humanCardViews.get(i).setOnMouseEntered(e -> {
+                if (humanTurn && index < hand.size()) {
+                    MusicManager.playSoundEffect("/com/example/miniproyecto3/Audio/hover.wav");  // <-- AGREGAR
                 }
             });
         }

@@ -41,7 +41,7 @@
                         <Bloom />
                      </effect>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="150.0" style="-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;" text="VICTORIA">
+                  <Label fx:id="resultLabel" alignment="CENTER" prefHeight="26.0" prefWidth="150.0" style="-fx-text-fill: #d6a43c; -fx-font-size: 14; -fx-font-weight: bold;" text="VICTORY">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
@@ -65,13 +65,13 @@
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Puntaje final" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label alignment="CENTER" text="Puntaje Final" textAlignment="CENTER" textFill="WHITE" />
                                     <Label fx:id="finalScoreLabel" style="-fx-text-fill: #C89B29;" text="8.500" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                                  <children>
-                                    <Label alignment="CENTER" text="Movimientos total" textAlignment="CENTER" textFill="WHITE" />
+                                    <Label alignment="CENTER" text="Movimientos" textAlignment="CENTER" textFill="WHITE" />
                                     <Label fx:id="movesLabel" style="-fx-text-fill: #C89B29;" text="12" />
                                  </children>
                               </VBox>

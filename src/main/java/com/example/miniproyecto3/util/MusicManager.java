@@ -11,6 +11,9 @@ import java.io.InputStream;
 public class MusicManager {
 
     private static Clip clip;
+    private static final float DEFAULT_VOLUME = 0.06f;
+
+    private static final float SFX_VOLUME = 0.3f;
 
     private static final float DEFAULT_VOLUME = 0.05f;
 
@@ -36,6 +39,7 @@ public class MusicManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     /** Detiene y libera la pista actual. */
@@ -44,6 +48,44 @@ public class MusicManager {
             clip.stop();
             clip.close();
             clip = null;
+        }
+    }
+
+    /**
+     * Reproduce un efecto de sonido corto (click, hover, etc.) sin afectar
+     * la música de fondo. Usa un Clip independiente y no hace loop.
+     * @param resourcePath ruta del recurso, ej: "/com/example/miniproyecto3/Audio/click.wav"
+     */
+    public static void playSoundEffect(String resourcePath) {
+        try {
+            InputStream is = MusicManager.class.getResourceAsStream(resourcePath);
+            if (is == null) {
+                System.err.println("[MusicManager] Efecto no encontrado: " + resourcePath);
+                return;
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+                    new BufferedInputStream(is));
+            Clip effectClip = AudioSystem.getClip();
+            effectClip.open(audioStream);
+
+            if (effectClip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl gainControl =
+                        (FloatControl) effectClip.getControl(FloatControl.Type.MASTER_GAIN);
+                float dB = (float) (Math.log10(Math.max(SFX_VOLUME, 0.0001f)) * 20);
+                gainControl.setValue(Math.max(gainControl.getMinimum(),
+                        Math.min(gainControl.getMaximum(), dB)));
+            }
+
+            // liberar recursos del clip cuando termine de sonar
+            effectClip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    effectClip.close();
+                }
+            });
+
+            effectClip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -57,4 +99,5 @@ public class MusicManager {
                     Math.min(gainControl.getMaximum(), dB)));
         }
     }
+
 }
