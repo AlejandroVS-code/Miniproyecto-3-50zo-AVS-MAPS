@@ -15,7 +15,6 @@ public class MusicManager {
 
     private static final float SFX_VOLUME = 0.3f;
 
-    private static final float DEFAULT_VOLUME = 0.05f;
 
     /**
      * Reproduce el archivo de audio indicado en bucle infinito.
