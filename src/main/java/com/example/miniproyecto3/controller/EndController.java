@@ -16,6 +16,20 @@ import com.example.miniproyecto3.util.AnimationUtil;
 
 import java.io.IOException;
 
+/**
+ * Controller for the results screen (EndView.fxml), shown once a
+ * match ends.
+ *
+ * Displays the winner's name, final score, and total moves, and shows
+ * "VICTORIA" in gold if the human player won, or "¡FALLASTE!" in red along
+ * with the winning AI's name and score otherwise. Also lets the player
+ * return to the main menu or start a new match with the same number of AI
+ * opponents.
+ *
+ * @author Maria Alejandra Pizarro Sarria
+ * @author Alejandro Valencia Sandoval
+ * @version 1.0
+ */
 public class EndController {
 
 
@@ -23,9 +37,9 @@ public class EndController {
     @FXML private Button menuBtn;
     @FXML private Button startBtn;
 
-    // Labels definidos en EndView.fxml (los que muestran el ganador y stats)
-    // Se buscan por fx:id; si tu FXML no les pone fx:id todavía,
-    // los inyectamos por lookup en initEndGame().
+    // Labels defined in EndView.fxml (the ones showing the winner and stats).
+    // They are looked up by fx:id; if your FXML does not set fx:id yet,
+    // inject them via lookup in initEndGame().
     @FXML private Label winnerNameLabel;   // fx:id="winnerNameLabel"
     @FXML private Label finalScoreLabel;   // fx:id="finalScoreLabel"
 
@@ -35,6 +49,11 @@ public class EndController {
 
     private int machineCount;
 
+    /**
+     * Called automatically by JavaFX after the FXML fields are injected.
+     * Wires the Menu and New Game buttons' actions, and attaches hover/press
+     * animations and sound effects to both.
+     */
     @FXML
     public void initialize() {
 
@@ -50,10 +69,13 @@ public class EndController {
     }
 
     /**
-     * Recibe los datos del ganador desde GameController y los muestra en pantalla.
+     * Receives the winner's data from GameController and displays it
+     * on screen, including whether the human player won or lost.
      *
-     * @param winner       Jugador ganador
-     * @param machineCount Número de IAs con las que se jugó (para reiniciar igual)
+     * @param winner       the winning player.
+     * @param machineCount number of AI opponents the match was played with
+     *                     (used to restart with the same configuration).
+     * @param totalMoves   total moves made by the winner during the match.
      */
     public void initEndGame(
             Player winner,
@@ -87,7 +109,7 @@ public class EndController {
     }
 
 
-    /** Cierra esta pantalla y vuelve al menú principal. */
+    /** Closes this screen and returns to the main menu. */
     private void handleMenu() {
         try {
             MusicManager.stopMusic();
@@ -99,7 +121,7 @@ public class EndController {
         }
     }
 
-    /** Cierra esta pantalla e inicia una nueva partida con el mismo número de IAs. */
+    /** Closes this screen and starts a new match with the same number of AI opponents. */
     private void handleNewGame() {
         try {
             MusicManager.stopMusic();

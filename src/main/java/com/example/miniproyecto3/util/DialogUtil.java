@@ -9,10 +9,28 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Provides simple, custom-styled modal dialogs used throughout the
+ * application, since the project favors a fully custom look over the
+ * default JavaFX {@code Alert} styling.
+ *
+ * This class cannot be instantiated; all functionality is exposed
+ * through static methods.
+ *
+ * @author Maria Alejandra Pizarro Sarria
+ * @author Alejandro Valencia Sandoval
+ * @version 1.0
+ */
 public class DialogUtil {
 
     private DialogUtil() {}
-
+    /**
+     * Displays a modal, undecorated error dialog with the given message and
+     * a single dismiss button. Blocks the calling thread until the dialog
+     * is closed.
+     *
+     * @param message the error message to display.
+     */
     public static void showError(String message) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -42,6 +60,13 @@ public class DialogUtil {
         dialog.showAndWait();
     }
 
+    /**
+     * Displays a modal, undecorated dialog asking the player to choose the
+     * value of an Ace they are about to play (1 or 10). Blocks the calling
+     * thread until the player makes a choice.
+     *
+     * @return {@code 1} or {@code 10}, depending on which option the player chose.
+     */
     public static int showAceDialog() {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

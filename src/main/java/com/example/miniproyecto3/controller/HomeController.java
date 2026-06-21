@@ -10,6 +10,18 @@ import com.example.miniproyecto3.util.AnimationUtil;
 
 import java.io.IOException;
 
+/**
+ * Controller for the home/main menu screen (HomeView.fxml).
+ *
+ * Lets the player choose how many AI opponents (1 to 3) to play against,
+ * plays the menu background music, wires hover/click sound effects and
+ * animations on every button, and starts a new match or exits the
+ * application.
+ *
+ * @author Maria Alejandra Pizarro Sarria
+ * @author Alejandro Valencia Sandoval
+ * @version 1.0
+ */
 public class HomeController {
 
     @FXML private Button selection1Ia;
@@ -20,6 +32,11 @@ public class HomeController {
 
     private int selectedMachineCount = 0;
 
+    /**
+     * Called automatically by JavaFX after the FXML fields are injected.
+     * Starts the menu music, wires every button's action handler, and
+     * attaches hover/press animations and sound effects to all buttons.
+     */
     @FXML
     public void initialize() {
 
@@ -46,6 +63,13 @@ public class HomeController {
 
     }
 
+    /**
+     * Records how many AI opponents the player selected and updates the
+     * visual state of the three selection buttons so only the chosen one
+     * appears active.
+     *
+     * @param count the number of AI opponents selected (1, 2, or 3).
+     */
     private void handleSelection(int count) {
         selectedMachineCount = count;
         selection1Ia.getStyleClass().removeAll("selection-btn-active");
@@ -59,12 +83,17 @@ public class HomeController {
         }
     }
 
+    /**
+     * Starts a new match with the selected number of AI opponents. Does
+     * nothing if no opponent count has been selected yet. Stops the menu
+     * music, closes this window, and opens the game screen.
+     */
     private void handleStart() {
         if (selectedMachineCount == 0) {
             return;
         }
         try {
-            MusicManager.stopMusic(); // detener menú antes de abrir juego
+            MusicManager.stopMusic(); // stop menu music before opening the game
             Stage stage = (Stage) startBtn.getScene().getWindow();
             stage.close();
 
@@ -76,6 +105,9 @@ public class HomeController {
         }
     }
 
+    /**
+     * Stops the menu music and closes the application window.
+     */
     private void handleExit() {
         MusicManager.stopMusic();
         Stage stage = (Stage) exitBtn.getScene().getWindow();

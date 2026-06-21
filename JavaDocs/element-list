@@ -1,0 +1,10 @@
+module:com.example.miniproyecto3
+com.example.miniproyecto3
+com.example.miniproyecto3.controller
+com.example.miniproyecto3.model
+com.example.miniproyecto3.model.enums
+com.example.miniproyecto3.model.exceptions
+com.example.miniproyecto3.model.interfaces
+com.example.miniproyecto3.thread
+com.example.miniproyecto3.util
+com.example.miniproyecto3.view

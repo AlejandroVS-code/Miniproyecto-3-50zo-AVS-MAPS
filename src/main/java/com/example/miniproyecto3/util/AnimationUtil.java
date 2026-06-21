@@ -10,10 +10,29 @@ import javafx.scene.effect.Glow;
 
 import java.util.List;
 
+/**
+ * Collection of static helper methods that apply JavaFX animations (and, in
+ * a few cases, paired sound effects) to UI nodes: card transitions, button
+ * hover/press feedback, turn highlighting, and elimination/error feedback.
+ *
+ * This class cannot be instantiated; all functionality is exposed
+ * through static methods.
+ *
+ * @author Maria Alejandra Pizarro Sarria
+ * @author Alejandro Valencia Sandoval
+ * @version 1.0
+ */
+
 public class AnimationUtil {
 
     private AnimationUtil() {}
 
+    /**
+     * Fades a card image view in from fully transparent to fully opaque.
+     * Used when revealing a newly drawn or newly placed card.
+     *
+     * @param card the card view to fade in.
+     */
     public static void fadeInCard(ImageView card) {
         card.setOpacity(0);
         FadeTransition fade = new FadeTransition(Duration.millis(400), card);
@@ -21,6 +40,13 @@ public class AnimationUtil {
         fade.setToValue(1);
         fade.play();
     }
+
+    /**
+     * Applies a red glow and a quick horizontal shake to a card view to
+     * signal an invalid play attempt.
+     *
+     * @param card the card view to shake.
+     */
     public static void invalidCardShake(ImageView card) {
         card.setStyle("-fx-effect: dropshadow(gaussian, #ff0000, 12, 0.8, 0, 0);");
 
@@ -36,6 +62,13 @@ public class AnimationUtil {
         shake.play();
     }
 
+    /**
+     * Fades a card view out, typically used when an AI player plays a card
+     * onto the table, then resets its opacity and runs the given callback.
+     *
+     * @param card     the card view to animate.
+     * @param onFinish callback invoked once the animation completes (may be {@code null}).
+     */
     public static void playCardToTable(ImageView card, Runnable onFinish) {
         FadeTransition fade = new FadeTransition(Duration.millis(300), card);
         fade.setFromValue(1);
@@ -47,6 +80,12 @@ public class AnimationUtil {
         fade.play();
     }
 
+    /**
+     * Scales a card view up briefly to indicate it has been selected by the
+     * player.
+     *
+     * @param card the card view to pulse.
+     */
     public static void selectCardPulse(ImageView card) {
         ScaleTransition scale = new ScaleTransition(Duration.millis(150), card);
         scale.setFromX(1.0);
@@ -57,6 +96,12 @@ public class AnimationUtil {
         scale.play();
     }
 
+    /**
+     * Scales a card view back down to its normal size, undoing
+     * {@link #selectCardPulse(ImageView)}.
+     *
+     * @param card the card view to reset.
+     */
     public static void deselectCard(ImageView card) {
         ScaleTransition scale = new ScaleTransition(Duration.millis(150), card);
         scale.setToX(1.0);
@@ -64,6 +109,12 @@ public class AnimationUtil {
         scale.play();
     }
 
+    /**
+     * Shakes a player's icon horizontally to signal that the player has
+     * just been eliminated.
+     *
+     * @param icon the player icon view to shake.
+     */
     public static void eliminatedShake(ImageView icon) {
         TranslateTransition shake = new TranslateTransition(Duration.millis(80), icon);
         shake.setFromX(0);
@@ -74,6 +125,11 @@ public class AnimationUtil {
         shake.play();
     }
 
+    /**
+     * Pulses a player's icon to draw attention to whose turn is currently active.
+     *
+     * @param icon the player icon view to pulse.
+     */
     public static void highlightTurn(ImageView icon) {
         ScaleTransition pulse = new ScaleTransition(Duration.millis(300), icon);
         pulse.setFromX(1.0);
@@ -84,6 +140,20 @@ public class AnimationUtil {
         pulse.setAutoReverse(true);
         pulse.play();
     }
+
+    /**
+     * Animates a group of card views moving toward a target deck view
+     * (translating and fading out simultaneously), compensating for any
+     * rotation applied to each card's parent container, then hides them and
+     * resets their transform/opacity once the animation finishes.
+     *
+     * Used both when a card is played (moving toward the discard pile)
+     * and when a player is eliminated (their hand moving back into the draw deck).
+     *
+     * @param cards    the card views to animate; invisible cards are skipped.
+     * @param deck     the target deck/pile view to animate the cards toward.
+     * @param onFinish callback invoked once every card has finished animating (may be {@code null}).
+     */
     public static void sendCardsToDeck(List<ImageView> cards, ImageView deck, Runnable onFinish) {
         if (cards.isEmpty()) {
             if (onFinish != null) onFinish.run();
@@ -102,7 +172,7 @@ public class AnimationUtil {
             double deltaX = deckBounds.getCenterX() - cardBounds.getCenterX();
             double deltaY = deckBounds.getCenterY() - cardBounds.getCenterY();
 
-            // Compensar la rotacion del contenedor padre
+            // Compensate for the parent container's rotation
             double rotation = card.getParent() != null
                     ? card.getParent().getRotate()
                     : 0;
@@ -137,6 +207,13 @@ public class AnimationUtil {
 
         allCards.play();
     }
+
+    /**
+     * Attaches a hover visual effect (slight scale-up plus a glow) and the
+     * hover sound effect to a button.
+     *
+     * @param button the button to enhance.
+     */
     public static void addHoverEffect(Button button) {
 
         Glow glow = new Glow(0.35);
@@ -165,6 +242,12 @@ public class AnimationUtil {
 
     }
 
+    /**
+     * Attaches a press visual effect (slight scale-down while held) and the
+     * click sound effect to a button.
+     *
+     * @param button the button to enhance.
+     */
     public static void addPressEffect(Button button) {
 
         button.setOnMousePressed(e -> {

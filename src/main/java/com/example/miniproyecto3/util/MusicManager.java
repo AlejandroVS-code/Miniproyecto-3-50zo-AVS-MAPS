@@ -5,23 +5,39 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 
 /**
- * Gestor de música de fondo usando javax.sound.sampled.
- * Soporta tres pistas: menu, game y end.
+ * Manages background music and short sound effects using
+ * {@code javax.sound.sampled}.
+ *
+ * Supports three looping background tracks (menu, game, end screen) and
+ * any number of short, non-looping sound effects (hover, click, turn), each
+ * with its own independently configurable volume. Sound effects are played
+ * on their own {@link Clip} instances so they never interrupt or get
+ * interrupted by the currently playing background track.
+ *
+ * @author Maria Alejandra Pizarro Sarria
+ * @author Alejandro Valencia Sandoval
+ * @version 1.0
  */
+
 public class MusicManager {
 
     private static Clip clip;
+
+    /** Volume applied to background music tracks (0.0f = silent, 1.0f = max). */
     private static final float DEFAULT_VOLUME = 0.06f;
 
+    /** Volume applied to short sound effects (0.0f = silent, 1.0f = max). */
     private static final float SFX_VOLUME = 0.3f;
 
 
     /**
-     * Reproduce el archivo de audio indicado en bucle infinito.
-     * @param resourcePath ruta del recurso, ej: "/com/example/miniproyecto3/Audio/menu.wav"
+     * Plays the given audio file on an infinite loop as the background
+     * track, stopping any track that was previously playing.
+     *
+     * @param resourcePath classpath resource path, e.g. {@code "/com/example/miniproyecto3/Audio/menu.wav"}.
      */
     public static void playMusic(String resourcePath) {
-        stopMusic(); // detener cualquier pista previa
+        stopMusic(); // stop any previously playing track
         try {
             InputStream is = MusicManager.class.getResourceAsStream(resourcePath);
             if (is == null) {
@@ -41,7 +57,7 @@ public class MusicManager {
 
     }
 
-    /** Detiene y libera la pista actual. */
+    /** Stops and releases the currently playing background track, if any. */
     public static void stopMusic() {
         if (clip != null) {
             clip.stop();
@@ -51,9 +67,11 @@ public class MusicManager {
     }
 
     /**
-     * Reproduce un efecto de sonido corto (click, hover, etc.) sin afectar
-     * la música de fondo. Usa un Clip independiente y no hace loop.
-     * @param resourcePath ruta del recurso, ej: "/com/example/miniproyecto3/Audio/click.wav"
+     * Plays a short sound effect (click, hover, etc.) without affecting the
+     * background music. Uses an independent, non-looping {@link Clip} that
+     * closes itself automatically once playback finishes.
+     *
+     * @param resourcePath classpath resource path, e.g. {@code "/com/example/miniproyecto3/Audio/click.wav"}.
      */
     public static void playSoundEffect(String resourcePath) {
         try {
@@ -75,7 +93,7 @@ public class MusicManager {
                         Math.min(gainControl.getMaximum(), dB)));
             }
 
-            // liberar recursos del clip cuando termine de sonar
+            // release the clip's resources once it finishes playing
             effectClip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     effectClip.close();
@@ -88,7 +106,11 @@ public class MusicManager {
         }
     }
 
-    /** Ajusta el volumen (0.0f = silencio, 1.0f = máximo). */
+    /**
+     * Adjusts the volume of the currently playing background track.
+     *
+     * @param volume the desired volume, from {@code 0.0f} (silent) to {@code 1.0f} (max).
+     */
     public static void setVolume(float volume) {
         if (clip != null && clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
             FloatControl gainControl =
