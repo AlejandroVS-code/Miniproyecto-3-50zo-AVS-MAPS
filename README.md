@@ -8,7 +8,7 @@ The player competes against 1, 2, or 3 AI-controlled players. On each turn, the 
 
 ## Authors
 
-| Name | GitHub | Studen ID |
+| Name | GitHub | Student ID |
 |---|---|--|
 | Alejandro Valencia Sandoval | [@AlejandroVS-code](https://github.com/AlejandroVS-code) | 2515411-2724|
 | Maria Alejandra Pizarro Sarria | [@Alejapizasar](https://github.com/Alejapizasar) | 2519474-2724 |
