@@ -311,6 +311,13 @@ public class GameController {
      */
     private void askAceValue(HumanPlayer human, int index) {
         int aceValue = DialogUtil.showAceDialog();
+
+        if (gameModel.getTablePile().getCurrentSum() + aceValue > GameConstants.MAX_SUM) {
+            AnimationUtil.invalidCardShake(humanCardViews.get(index));
+            DialogUtil.showError("Esa carta excede 50 puntos.");
+            return;
+        }
+
         List<ImageView> cardToAnimate = List.of(humanCardViews.get(index));
         AnimationUtil.sendCardsToDeck(cardToAnimate, discardPile, () -> {
             try {
