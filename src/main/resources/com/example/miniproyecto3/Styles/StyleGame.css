@@ -48,5 +48,5 @@
 
 .counter-danger {
     -fx-text-fill: #FF0000;
-    -fx-effect: dropshadow(gaussian, #ff0000, 8, 0.6, 0, 0);
+    -fx-effect: dropshadow(gaussian, #ff0000, 8, 0.3, 0, 0);
 }
