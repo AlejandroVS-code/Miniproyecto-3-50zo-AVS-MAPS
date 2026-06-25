@@ -93,7 +93,7 @@ public class HomeController {
             return;
         }
         try {
-            MusicManager.stopMusic(); // stop menu music before opening the game
+            MusicManager.stopMusic();
             Stage stage = (Stage) startBtn.getScene().getWindow();
             stage.close();
 

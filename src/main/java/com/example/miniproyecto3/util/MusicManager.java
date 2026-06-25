@@ -37,7 +37,7 @@ public class MusicManager {
      * @param resourcePath classpath resource path, e.g. {@code "/com/example/miniproyecto3/Audio/menu.wav"}.
      */
     public static void playMusic(String resourcePath) {
-        stopMusic(); // stop any previously playing track
+        stopMusic();
         try {
             InputStream is = MusicManager.class.getResourceAsStream(resourcePath);
             if (is == null) {
@@ -93,7 +93,7 @@ public class MusicManager {
                         Math.min(gainControl.getMaximum(), dB)));
             }
 
-            // release the clip's resources once it finishes playing
+
             effectClip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     effectClip.close();

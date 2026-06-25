@@ -37,11 +37,9 @@ public class EndController {
     @FXML private Button menuBtn;
     @FXML private Button startBtn;
 
-    // Labels defined in EndView.fxml (the ones showing the winner and stats).
-    // They are looked up by fx:id; if your FXML does not set fx:id yet,
-    // inject them via lookup in initEndGame().
-    @FXML private Label winnerNameLabel;   // fx:id="winnerNameLabel"
-    @FXML private Label finalScoreLabel;   // fx:id="finalScoreLabel"
+
+    @FXML private Label winnerNameLabel;
+    @FXML private Label finalScoreLabel;
 
     @FXML private Label resultLabel;
 

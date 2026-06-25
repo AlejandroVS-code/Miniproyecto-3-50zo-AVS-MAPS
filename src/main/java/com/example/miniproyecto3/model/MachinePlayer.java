@@ -93,9 +93,9 @@ public class MachinePlayer extends Player {
         Random random = new Random();
         int remaining = GameConstants.MAX_SUM - tableSum;
 
-        // Aggressive phase: low sum, play high to pressure
+
         if (tableSum <= 20) {
-            // 70% aggressive, 30% random
+
             if (random.nextInt(100) < 70) {
                 return validCards.stream()
                         .max(Comparator.comparingInt(c -> c.getValue(tableSum)))
@@ -104,9 +104,9 @@ public class MachinePlayer extends Player {
             return validCards.get(random.nextInt(validCards.size()));
         }
 
-        // Tactical phase: mid sum, mixed strategy
+
         if (tableSum <= 35) {
-            // Prioritize cards that leave the total between 40-45 to pressure without risk
+
             List<Card> tacticalCards = new ArrayList<>();
             for (Card card : validCards) {
                 int newSum = tableSum + card.getValue(tableSum);
@@ -117,7 +117,7 @@ public class MachinePlayer extends Player {
             if (!tacticalCards.isEmpty()) {
                 return tacticalCards.get(random.nextInt(tacticalCards.size()));
             }
-            // If there is no perfect tactical option, 50% aggressive 50% conservative
+
             if (random.nextBoolean()) {
                 return validCards.stream()
                         .max(Comparator.comparingInt(c -> c.getValue(tableSum)))
@@ -128,9 +128,9 @@ public class MachinePlayer extends Player {
                     .orElse(validCards.get(0));
         }
 
-        // Defensive phase: high sum, prioritize neutral and negative cards
+
         if (tableSum > 35) {
-            // First look for cards that subtract or are neutral
+
             List<Card> safeCards = new ArrayList<>();
             for (Card card : validCards) {
                 int value = card.getValue(tableSum);
@@ -140,8 +140,7 @@ public class MachinePlayer extends Player {
                 return safeCards.get(random.nextInt(safeCards.size()));
             }
 
-            // If there are no safe cards, play the one that adds the least,
-            // but with a 20% chance play a random one to remain unpredictable
+
             if (random.nextInt(100) < 20) {
                 return validCards.get(random.nextInt(validCards.size()));
             }

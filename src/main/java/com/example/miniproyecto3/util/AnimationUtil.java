@@ -172,7 +172,7 @@ public class AnimationUtil {
             double deltaX = deckBounds.getCenterX() - cardBounds.getCenterX();
             double deltaY = deckBounds.getCenterY() - cardBounds.getCenterY();
 
-            // Compensate for the parent container's rotation
+
             double rotation = card.getParent() != null
                     ? card.getParent().getRotate()
                     : 0;
